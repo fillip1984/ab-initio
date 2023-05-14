@@ -14,7 +14,7 @@ model WeighIn {
   id                String   @id @default(cuid())
   createdAt         DateTime @default(now())
   updatedAt         DateTime @default(now())
-  date              DateTime @default(now())
+  date              DateTime
   weight            Decimal
   bodyFatPercentage Decimal?
 }
@@ -23,7 +23,7 @@ model Goal {
   id                String   @id @default(cuid())
   createdAt         DateTime @default(now())
   updatedAt         DateTime @default(now())
-  targetDate        DateTime @default(now())
+  targetDate        DateTime
   weight            Decimal
   bodyFatPercentage Decimal?
 }
