@@ -22,7 +22,7 @@ const BottomNav = () => {
     },
   ];
   return (
-    <nav className="fixed bottom-0 left-0 right-0 flex h-12 items-center justify-around bg-green-200 p-2">
+    <nav className="fixed bottom-0 left-0 right-0 flex h-12 items-center justify-around bg-green-200 py-12">
       {navItems.map((navItem) => (
         <Link href={navItem.href} key={navItem.label} className="text-4xl">
           {navItem.icon}

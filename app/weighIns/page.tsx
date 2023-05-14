@@ -8,8 +8,8 @@ import { MdTrendingDown, MdTrendingFlat, MdTrendingUp } from "react-icons/md";
 const WeighIns = async () => {
   const weighIns = await getWeighIns();
   return (
-    <div className="py-12">
-      <h2>ab initio</h2>
+    <>
+      <h2 className="my-2 text-center">ab initio</h2>
 
       <div className="flex flex-col gap-2">
         {weighIns.map((weighIn) => (
@@ -32,21 +32,23 @@ const WeighIns = async () => {
               </div>
             </div>
 
-            <div className="flex flex-col">
-              <div className="flex items-center justify-between gap-2">
-                <GiMuscleFat />
-                {weighIn.bodyFatPercentage?.toString()}%
-              </div>
-              <div className="flex items-center justify-between gap-2">
-                <div className="text-2xl">
-                  <MdTrendingDown />
+            {weighIn.bodyFatPercentage && (
+              <div className="flex flex-col">
+                <div className="flex items-center justify-between gap-2">
+                  <GiMuscleFat />
+                  {weighIn.bodyFatPercentage?.toString()}%
                 </div>
-                <div className="flex flex-col items-end text-xs">
-                  <span>.25% lost</span>
-                  <span>4.12% to goal</span>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="text-2xl">
+                    <MdTrendingDown />
+                  </div>
+                  <div className="flex flex-col items-end text-xs">
+                    <span>.25% lost</span>
+                    <span>4.12% to goal</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             <div className="flex flex-col">
               <div className="flex items-center justify-between gap-2">
@@ -60,7 +62,7 @@ const WeighIns = async () => {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 
