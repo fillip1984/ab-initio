@@ -1,6 +1,6 @@
 # ab-initio
 
-> Playing around with NextJs server actions, trying to build an entire weight tracking application without a single api route having to be written.
+> Playing around with NextJs server actions, trying to build a very basic weight tracking application without a single api route having to be written.
 
 Name of repo: <https://en.wikipedia.org/wiki/Ab_initio>
 
