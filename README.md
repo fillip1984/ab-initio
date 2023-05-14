@@ -17,4 +17,4 @@ Name of repo: <https://en.wikipedia.org/wiki/Ab_initio>
     * [ ] use gesture such as slide it right to get edit/delete options
   * [ ] delete
     * [ ] use gesture such as slide it right to get edit/delete options
-* [ ] UI typed and validated, like zod/yup/react-hook-form. Need to wait some to see how server actions develop. Right now, I'm using ideas used over on remix forms since it has a similar approach to this idea of server actions
+* [ ] Make form fields typed and validated, like zod/yup/react-hook-form. Need to wait some to see how server actions develop. Right now, I'm using ideas used over on remix forms since it has a similar approach to this idea of server actions

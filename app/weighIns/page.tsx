@@ -1,4 +1,4 @@
-import { getWeighIns } from "@/ServerActions";
+import { getWeighIns } from "@/ServerActions/actions";
 import { format } from "date-fns";
 import { BsCalendarEvent } from "react-icons/bs";
 import { IoScaleOutline } from "react-icons/io5";
@@ -15,9 +15,9 @@ const WeighIns = async () => {
         {weighIns.map((weighIn) => (
           <div
             key={weighIn.id}
-            className="flex justify-between items-center border-1 rounded-xl bg-gray-200 p-2">
+            className="border-1 flex items-center justify-between rounded-xl bg-gray-200 p-2">
             <div className="flex flex-col">
-              <span className="flex gap-2 justify-between items-center">
+              <span className="flex items-center justify-between gap-2">
                 <IoScaleOutline />
                 <span className="text-3xl">{weighIn.weight.toString()}</span>
               </span>
@@ -25,7 +25,7 @@ const WeighIns = async () => {
                 <div className="text-2xl">
                   <MdTrendingDown />
                 </div>
-                <div className="flex text-xs flex-col items-end">
+                <div className="flex flex-col items-end text-xs">
                   <span>5 lost</span>
                   <span>35 to goal</span>
                 </div>
@@ -33,7 +33,7 @@ const WeighIns = async () => {
             </div>
 
             <div className="flex flex-col">
-              <div className="flex gap-2 justify-between items-center">
+              <div className="flex items-center justify-between gap-2">
                 <GiMuscleFat />
                 {weighIn.bodyFatPercentage?.toString()}%
               </div>
@@ -41,7 +41,7 @@ const WeighIns = async () => {
                 <div className="text-2xl">
                   <MdTrendingDown />
                 </div>
-                <div className="flex text-xs flex-col items-end">
+                <div className="flex flex-col items-end text-xs">
                   <span>.25% lost</span>
                   <span>4.12% to goal</span>
                 </div>
@@ -49,11 +49,11 @@ const WeighIns = async () => {
             </div>
 
             <div className="flex flex-col">
-              <div className="flex gap-2 justify-between items-center">
+              <div className="flex items-center justify-between gap-2">
                 <BsCalendarEvent />
                 {format(weighIn.date, "MM-dd-yyyy")}
               </div>
-              <div className="flex text-xs items-center gap-2">
+              <div className="flex items-center gap-2 text-xs">
                 13 days into journey
               </div>
             </div>

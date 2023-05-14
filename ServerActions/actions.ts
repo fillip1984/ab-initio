@@ -1,7 +1,7 @@
 "use server";
 
 import { zfd } from "zod-form-data";
-import { prisma } from "./prisma/globalPrismaClient";
+import { prisma } from "../prisma/globalPrismaClient";
 import { redirect } from "next/navigation";
 
 const schema = zfd.formData({
@@ -19,11 +19,11 @@ export const addWeighIn = async (formData: FormData) => {
   // get fields slightly better but still not as accessible
   //   const { date, weight, bodyFatPercentage } = Object.fromEntries(formData);
 
-  // get fields even better but not every data type supported using a framework
+  // get fields even better but not every data type supported, using a remix forms framework
   const { date, weight, bodyFatPercentage } = schema.parse(formData);
   // still have to convert date to Date
 
-  // here's an possible option: https://github.com/colinhacks/zod/discussions/1860
+  // here's a possible option: https://github.com/colinhacks/zod/discussions/1860
 
   // here's a method, I couldn't get working, for converting formData to Json, https://ilikekillnerds.com/2017/09/convert-formdata-json-object/
 

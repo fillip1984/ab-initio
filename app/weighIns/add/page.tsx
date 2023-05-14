@@ -1,10 +1,10 @@
-import { addWeighIn } from "@/ServerActions";
+import { addWeighIn } from "@/ServerActions/actions";
 import Link from "next/link";
 
 const AddWeighIn = () => {
   return (
     <div>
-      <form action={addWeighIn} noValidate>
+      <form action={addWeighIn}>
         <div className="form-control">
           <label htmlFor="date">Date</label>
           <input type="date" id="date" name="date" />
