@@ -41,7 +41,7 @@ export const addWeighIn = async (formData: FormData) => {
 export const getWeighIns = async () => {
   const weighIns = await prisma.weighIn.findMany({
     orderBy: {
-      date: "asc",
+      date: "desc",
     },
   });
   return weighIns;

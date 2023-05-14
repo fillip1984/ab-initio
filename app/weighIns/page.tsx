@@ -8,48 +8,54 @@ import { MdTrendingDown, MdTrendingFlat, MdTrendingUp } from "react-icons/md";
 const WeighIns = async () => {
   const weighIns = await getWeighIns();
   return (
-    <div className="p-12">
+    <div className="py-12">
       <h2>ab initio</h2>
 
       <div className="flex flex-col gap-2">
         {weighIns.map((weighIn) => (
           <div
             key={weighIn.id}
-            className="w-full p-4 flex justify-between border-2 border-red-200 rounded-xl bg-red-100">
-            <span className="stat flex flex-col items-center">
-              <span className="stat-icon text-xl text-gray-400 mb-2">
-                <BsCalendarEvent />
+            className="flex justify-between items-center border-1 rounded-xl bg-gray-200 p-2">
+            <div className="flex flex-col">
+              <span className="flex gap-2 justify-between items-center">
+                <IoScaleOutline />
+                <span className="text-3xl">{weighIn.weight.toString()}</span>
               </span>
-              <span className="stat-value text-xl font-bold">
-                {format(weighIn.date, "MM-dd-yyyy")}
-              </span>
-              <span className="stat-desc text-gray-400 text-sm">
-                55 days since goal set
-              </span>
-            </span>
-
-            <div className="stat flex gap-6 text-red-500 items-center">
-              <div className="stat-content flex flex-col">
-                <span className="stat-value text-2xl font-bold">
-                  {weighIn.weight.toString()}
-                </span>
-                <span className="stat-desc flex items-center text-sm text-red-300">
-                  2 lbs gained <MdTrendingUp />
-                </span>
+              <div className="flex items-center justify-between gap-2">
+                <div className="text-2xl">
+                  <MdTrendingDown />
+                </div>
+                <div className="flex text-xs flex-col items-end">
+                  <span>5 lost</span>
+                  <span>35 to goal</span>
+                </div>
               </div>
-              <IoScaleOutline className="text-4xl" />
             </div>
 
-            <div className="stat flex gap-6 text-red-500 items-center">
-              <div className="stat-content flex flex-col">
-                <span className="stat-value text-2xl font-bold">
-                  {weighIn.bodyFatPercentage?.toString()}
-                </span>
-                <span className="stat-desc flex items-center text-sm text-red-300">
-                  3% <MdTrendingUp /> <MdTrendingFlat /> <MdTrendingDown />
-                </span>
+            <div className="flex flex-col">
+              <div className="flex gap-2 justify-between items-center">
+                <GiMuscleFat />
+                {weighIn.bodyFatPercentage?.toString()}%
               </div>
-              <GiMuscleFat className="text-4xl" />
+              <div className="flex items-center justify-between gap-2">
+                <div className="text-2xl">
+                  <MdTrendingDown />
+                </div>
+                <div className="flex text-xs flex-col items-end">
+                  <span>.25% lost</span>
+                  <span>4.12% to goal</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <div className="flex gap-2 justify-between items-center">
+                <BsCalendarEvent />
+                {format(weighIn.date, "MM-dd-yyyy")}
+              </div>
+              <div className="flex text-xs items-center gap-2">
+                13 days into journey
+              </div>
             </div>
           </div>
         ))}
