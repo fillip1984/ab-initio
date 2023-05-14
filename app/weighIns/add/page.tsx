@@ -12,13 +12,14 @@ const AddWeighIn = () => {
 
         <div className="form-control">
           <label htmlFor="weight">Weight</label>
-          <input type="number" id="weight" name="weight" />
+          <input type="number" step={0.01} id="weight" name="weight" />
         </div>
 
         <div className="form-control">
           <label htmlFor="bodyFatPercentage">Body Fat % (optional)</label>
           <input
             type="number"
+            step={0.01}
             id="bodyFatPercentage"
             name="bodyFatPercentage"
           />
