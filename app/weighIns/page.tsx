@@ -1,5 +1,5 @@
 import { getWeighIns } from "@/ServerActions/actions";
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
 import { BsCalendarEvent } from "react-icons/bs";
 import { IoScaleOutline } from "react-icons/io5";
 import { GiMuscleFat } from "react-icons/gi";
@@ -7,6 +7,7 @@ import { MdTrendingDown, MdTrendingFlat, MdTrendingUp } from "react-icons/md";
 
 const WeighIns = async () => {
   const weighIns = await getWeighIns();
+
   return (
     <>
       <h2 className="my-2 text-center">ab initio</h2>
@@ -23,16 +24,23 @@ const WeighIns = async () => {
               </span>
               <div className="flex items-center justify-between gap-2">
                 <div className="text-2xl">
-                  <MdTrendingDown />
+                  {weighIn.weightProgress.isPositive() &&
+                    !weighIn.weightProgress.isZero() && <MdTrendingUp />}
+                  {weighIn.weightProgress.isZero() && <MdTrendingFlat />}
+                  {weighIn.weightProgress.isNegative() && <MdTrendingDown />}
                 </div>
                 <div className="flex flex-col items-end text-xs">
-                  <span>5 lost</span>
-                  <span>35 to goal</span>
+                  <span>
+                    {weighIn.weightProgress.toString()} lbs{" "}
+                    {weighIn.weightProgress.isPositive() ? "gained" : "lost"}
+                  </span>
+                  <span>.13 lbs gained overall</span>
+                  <span>{weighIn.weightToGoal.toString()} to goal</span>
                 </div>
               </div>
             </div>
 
-            {weighIn.bodyFatPercentage && (
+            {/* {weighIn.bodyFatPercentage && (
               <div className="flex flex-col">
                 <div className="flex items-center justify-between gap-2">
                   <GiMuscleFat />
@@ -48,16 +56,16 @@ const WeighIns = async () => {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
 
             <div className="flex flex-col">
               <div className="flex items-center justify-between gap-2">
                 <BsCalendarEvent />
-                {format(weighIn.date, "MM-dd-yyyy")}
+                {weighIn.date.toISOString().substring(0, 10)}
               </div>
-              <div className="flex items-center gap-2 text-xs">
+              {/* <div className="flex items-center gap-2 text-xs">
                 13 days into journey
-              </div>
+              </div> */}
             </div>
           </div>
         ))}

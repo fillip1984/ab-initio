@@ -11,12 +11,19 @@ datasource db {
 }
 
 model WeighIn {
-  id                String   @id @default(cuid())
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now())
-  date              DateTime
-  weight            Decimal
-  bodyFatPercentage Decimal?
+  id                 String   @id @default(cuid())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
+  date               DateTime @unique
+  weight             Decimal
+  bodyFatPercentage  Decimal?
+  weightProgress     Decimal
+  weightTotalChange  Decimal
+  weightToGoal       Decimal
+  bodyFatProgress    Decimal?
+  bodyFatTotalChange Decimal?
+  bodyFatToGoal      Decimal?
+  previousWeighIn    String?
 }
 
 model Goal {
