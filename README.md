@@ -7,9 +7,11 @@ Name of repo: <https://en.wikipedia.org/wiki/Ab_initio>
 ## Goals
 
 * [x] mobile first UI design
+* [x] ability to set goal
+  * [ ] useFormStatus to update ui to show mutation is happening, maybe even optomistic update?
 * [ ] weigh in crud without rest api
   * [X] create
-    * [ ] have progress tracked for weigh ins (x lbs lost, to goal, etc)
+    * [x] have progress tracked for weigh ins (x lbs lost, to goal, etc)
     * [ ] useFormStatus to update ui to show mutation is happening
   * [X] read
     * [ ] pagination, maybe grab top 10 and then next button

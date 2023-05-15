@@ -1,16 +1,17 @@
-import { getWeighIns } from "@/ServerActions/actions";
-import { format, formatISO } from "date-fns";
+import { getGoal, getWeighIns } from "@/serverActions/actions";
 import { BsCalendarEvent } from "react-icons/bs";
+import { GiMuscleFat, GiStairsGoal } from "react-icons/gi";
 import { IoScaleOutline } from "react-icons/io5";
-import { GiMuscleFat } from "react-icons/gi";
 import { MdTrendingDown, MdTrendingFlat, MdTrendingUp } from "react-icons/md";
 
 const WeighIns = async () => {
   const weighIns = await getWeighIns();
+  const goal = await getGoal();
+  const goalWeight = goal.weight.toNumber();
 
   return (
     <>
-      <h2 className="my-2 text-center">ab initio</h2>
+      <h3 className="my-2 text-center">ab initio</h3>
 
       <div className="flex flex-col gap-2">
         {weighIns.map((weighIn) => (
@@ -19,13 +20,13 @@ const WeighIns = async () => {
               <BsCalendarEvent />
               {weighIn.date.toISOString().substring(0, 10)}
             </div>
-            <div className="flex flex-1 justify-between bg-gray-300 p-4">
+            <div className="flex flex-1 justify-between bg-gray-100 p-4">
               <span className="flex flex-col items-center text-3xl">
-                <span className="text-xs uppercase text-gray-500">
-                  Weight (LBS)
-                </span>
+                <span className="text-xs uppercase text-gray-500">Weight</span>
                 {weighIn.weight.toNumber()}
-                <div className="flex items-center gap-1 text-gray-500"></div>
+                <span className="flex items-center gap-2 text-xs text-gray-500">
+                  <IoScaleOutline /> lbs
+                </span>
               </span>
               <span className="flex flex-col items-center text-xl">
                 <span className="text-xs uppercase text-gray-500">To Date</span>
@@ -46,14 +47,20 @@ const WeighIns = async () => {
               <span className="flex flex-col items-center text-3xl">
                 <span className="text-xs uppercase text-gray-500">To Goal</span>
                 {weighIn.weightToGoal.toNumber()}
+                <span className="flex items-center gap-2 text-xs text-gray-500">
+                  <GiStairsGoal />
+                  {goalWeight} lbs
+                </span>
               </span>
             </div>
 
             {/* TODO: add in additional stats? */}
-            <div className="flex justify-around border-t-2 border-t-gray-200 bg-gray-300 p-2">
-              <span>23% bf</span>
+            {/* <div className="flex justify-around border-t-2 border-t-gray-200 bg-gray-300 p-2">
+              <span>
+                23% bf <GiMuscleFat />
+              </span>
               <span>28.4 BMI</span>
-            </div>
+            </div> */}
           </div>
         ))}
       </div>

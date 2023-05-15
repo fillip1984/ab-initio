@@ -1,16 +1,9 @@
 "use server";
 
-import { zfd } from "zod-form-data";
-import { prisma } from "../prisma/globalPrismaClient";
-import { redirect } from "next/navigation";
-import { differenceInCalendarDays } from "date-fns";
 import { WeighInsDateDiffed } from "@/types";
-
-// const schema = zfd.formData({
-//   date: zfd.text(), //wish there was support for date, even better would be using the prisma schema
-//   weight: zfd.numeric(),
-//   bodyFatPercentage: zfd.numeric().optional(),
-// });
+import { differenceInCalendarDays } from "date-fns";
+import { redirect } from "next/navigation";
+import { prisma } from "../prisma/globalPrismaClient";
 
 export const addWeighIn = async (formData: FormData) => {
   // get fields, very manual way
@@ -53,47 +46,34 @@ export const addWeighIn = async (formData: FormData) => {
   // here's a method, I couldn't get working, for converting formData to Json, https://ilikekillnerds.com/2017/09/convert-formdata-json-object/
 
   // get previous weigh in, so we can update progress such as x lbs lost, x lbs to goal
-  const allWeighIns = await prisma.weighIn.findMany();
 
-  const weighInDateDiffed: WeighInsDateDiffed[] = allWeighIns
-    .map((previous) => {
-      return {
-        diff: differenceInCalendarDays(weighInDate, previous.date),
-        previousWeighIn: previous,
-      };
-    })
-    .sort((a, b) => {
-      return a.diff - b.diff;
-    });
+  const firstWeighIn = await getFirstWeighIn();
+  const previousWeighIn = await getPreviousWeighIn(weighInDate);
 
-  const closestPreviousWeighIn = weighInDateDiffed.filter(
-    (previousWeighIn) => previousWeighIn.diff > 0
-  )[0];
+  const goal = await getGoal();
+  const goalWeight = goal.weight.toNumber();
 
-  const firstWeighIn = weighInDateDiffed[weighInDateDiffed.length - 1];
-
-  let goal = 175;
   let weightProgress;
   let weightToGoal;
   let weightTotalChange;
   // let bodyFatProgress;
   // let bodyFatTotalChange;
   // let bodyFatToGoal;
-  if (closestPreviousWeighIn) {
-    weightProgress = (
-      weighInWeight - closestPreviousWeighIn.previousWeighIn.weight.toNumber()
-    ).toFixed(2);
-
-    weightTotalChange = (
-      weighInWeight - firstWeighIn.previousWeighIn.weight.toNumber()
-    ).toFixed(2);
-
-    weightToGoal = (weighInWeight - goal).toFixed(2);
-  } else if (allWeighIns.length === 0) {
+  if (firstWeighIn == null) {
     //first time weighing in
     weightProgress = 0;
     weightTotalChange = 0;
-    weightToGoal = Math.round((weighInWeight - goal) * 100) / 100;
+    weightToGoal = Math.round((weighInWeight - goalWeight) * 100) / 100;
+  } else if (previousWeighIn != null) {
+    weightProgress = (
+      weighInWeight - previousWeighIn.weight.toNumber()
+    ).toFixed(2);
+
+    weightTotalChange = (
+      weighInWeight - firstWeighIn.weight.toNumber()
+    ).toFixed(2);
+
+    weightToGoal = (weighInWeight - goalWeight).toFixed(2);
   } else {
     throw Error("Cannot find previous weigh In");
   }
@@ -131,4 +111,75 @@ export const getWeighIns = async () => {
   });
 
   return weighIns;
+};
+
+export const getPreviousWeighIn = async (date: Date) => {
+  const allWeighIns = await prisma.weighIn.findMany({
+    orderBy: {
+      date: "desc",
+    },
+  });
+  const weighInDateDiffed: WeighInsDateDiffed[] = allWeighIns
+    .map((previous) => {
+      return {
+        diff: differenceInCalendarDays(date, previous.date),
+        previousWeighIn: previous,
+      };
+    })
+    .sort((a, b) => {
+      return a.diff - b.diff;
+    });
+
+  return weighInDateDiffed.filter(
+    (previousWeighIn) => previousWeighIn.diff > 0
+  )[0].previousWeighIn;
+};
+
+export const getFirstWeighIn = async () => {
+  const firstWeighIn = await prisma.weighIn.findFirst({
+    orderBy: {
+      date: "asc",
+    },
+    take: 1,
+  });
+  return firstWeighIn;
+};
+
+export const getGoal = async () => {
+  let goal = await prisma.goal.findFirst();
+
+  if (goal === null) {
+    // TODO: very presumptuous!
+    goal = await prisma.goal.create({
+      data: {
+        weight: 175,
+      },
+    });
+  }
+
+  return goal;
+};
+
+export const updateGoal = async (formData: FormData) => {
+  const id = formData.get("id")?.valueOf() as string;
+  const weight = formData.get("weight")?.valueOf() as number;
+
+  if (!id) {
+    throw Error("Id is required");
+  }
+
+  if (!weight) {
+    throw Error("Goal weight is required");
+  }
+
+  const result = await prisma.goal.update({
+    data: {
+      weight,
+    },
+    where: {
+      id,
+    },
+  });
+
+  return result;
 };
