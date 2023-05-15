@@ -76,21 +76,19 @@ export const addWeighIn = async (formData: FormData) => {
   let weightProgress;
   let weightToGoal;
   let weightTotalChange;
-  let bodyFatProgress;
-  let bodyFatTotalChange;
-  let bodyFatToGoal;
+  // let bodyFatProgress;
+  // let bodyFatTotalChange;
+  // let bodyFatToGoal;
   if (closestPreviousWeighIn) {
-    weightProgress =
-      Math.round(
-        (weighInWeight -
-          closestPreviousWeighIn.previousWeighIn.weight.toNumber()) *
-          100
-      ) / 100;
-    weightTotalChange =
-      Math.round(
-        (weighInWeight - firstWeighIn.previousWeighIn.weight.toNumber()) * 100
-      ) / 100;
-    weightToGoal = Math.round((weighInWeight - goal) * 100) / 100; // want to show positive number unless we're under goal
+    weightProgress = (
+      weighInWeight - closestPreviousWeighIn.previousWeighIn.weight.toNumber()
+    ).toFixed(2);
+
+    weightTotalChange = (
+      weighInWeight - firstWeighIn.previousWeighIn.weight.toNumber()
+    ).toFixed(2);
+
+    weightToGoal = (weighInWeight - goal).toFixed(2);
   } else if (allWeighIns.length === 0) {
     //first time weighing in
     weightProgress = 0;
@@ -99,8 +97,6 @@ export const addWeighIn = async (formData: FormData) => {
   } else {
     throw Error("Cannot find previous weigh In");
   }
-  console.log("progress", weightProgress);
-  console.log("toGoal", weightToGoal);
 
   const result = await prisma.weighIn.create({
     data: {
@@ -109,9 +105,9 @@ export const addWeighIn = async (formData: FormData) => {
       weightProgress,
       weightTotalChange,
       weightToGoal,
-      bodyFatPercentage: weighInBodyFatPercentage,
-      bodyFatProgress,
-      bodyFatTotalChange,
+      // bodyFatPercentage: weighInBodyFatPercentage,
+      // bodyFatProgress,
+      // bodyFatTotalChange,
     },
   });
 
@@ -128,8 +124,8 @@ export const getWeighIns = async () => {
       id: true,
       date: true,
       weight: true,
-      bodyFatPercentage: true,
       weightProgress: true,
+      weightTotalChange: true,
       weightToGoal: true,
     },
   });

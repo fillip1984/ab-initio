@@ -20,7 +20,7 @@ const WeighIns = async () => {
             <div className="flex flex-col">
               <span className="flex items-center justify-between gap-2">
                 <IoScaleOutline />
-                <span className="text-3xl">{weighIn.weight.toString()}</span>
+                <span className="text-3xl">{weighIn.weight.toNumber()}</span>
               </span>
               <div className="flex items-center justify-between gap-2">
                 <div className="text-2xl">
@@ -31,11 +31,21 @@ const WeighIns = async () => {
                 </div>
                 <div className="flex flex-col items-end text-xs">
                   <span>
-                    {weighIn.weightProgress.toString()} lbs{" "}
-                    {weighIn.weightProgress.isPositive() ? "gained" : "lost"}
+                    {weighIn.weightProgress.toNumber()} lbs{" "}
+                    {weighIn.weightProgress.isNegative() ||
+                    weighIn.weightProgress.isZero()
+                      ? "lost"
+                      : "gained"}
                   </span>
-                  <span>.13 lbs gained overall</span>
-                  <span>{weighIn.weightToGoal.toString()} to goal</span>
+                  <span>
+                    {weighIn.weightTotalChange.toNumber()} lbs{" "}
+                    {weighIn.weightTotalChange.isNegative() ||
+                    weighIn.weightTotalChange.isZero()
+                      ? "lost"
+                      : "gained"}{" "}
+                    overall
+                  </span>
+                  <span>{weighIn.weightToGoal.toNumber()} to goal</span>
                 </div>
               </div>
             </div>
